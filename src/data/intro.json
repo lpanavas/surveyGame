@@ -145,7 +145,7 @@
           "public": 100
         }
       ],
-      "next": "game"
+      "next": { "type": "game", "key": "pairwise_comparison" }
     }
   }
 }
