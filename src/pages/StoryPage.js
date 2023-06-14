@@ -9,12 +9,8 @@ function StoryPage({ storyPath, finishStory }) {
   const [dialogues, setDialogues] = useState([]);
 
   useEffect(() => {
-    fetch(storyPath)
-      .then((response) => response.json())
-      .then((data) => {
-        setStoryData(data);
-        setCurrentScene(data.start);
-      });
+    setStoryData(storyPath);
+    setCurrentScene(storyPath.start);
   }, [storyPath]);
 
   useEffect(() => {

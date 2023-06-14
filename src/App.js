@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import LandingPage from "./pages/LandingPage";
 import StoryGamePage from "./pages/StoryGamePage";
-import structure from "./data/structure.json";
+// import structure from "./data/structure.json";
+import newStructure from "./data/newStructure.json";
 import "./components/styles/App.css";
 
 function App() {
   const [showGame, setShowGame] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
-  const [currentKey, setCurrentKey] = useState(structure.order[0]);
+  const [currentKey, setCurrentKey] = useState(newStructure.order[0]);
 
   useEffect(() => {
-    setCurrentKey(structure.order[currentPosition]);
+    setCurrentKey(newStructure.order[currentPosition]);
   }, [currentPosition]);
 
-  const isCurrentPositionGame = Object.keys(structure.games).includes(
+  const isCurrentPositionGame = Object.keys(newStructure.games).includes(
     currentKey
   );
-  const isCurrentPositionStory = Object.keys(structure.stories).includes(
+  const isCurrentPositionStory = Object.keys(newStructure.stories).includes(
     currentKey
   );
 
@@ -27,9 +28,10 @@ function App() {
   };
 
   const currentPath = isCurrentPositionStory
-    ? structure.stories[currentKey].path
-    : structure.games[currentKey].path;
+    ? newStructure.stories[currentKey]
+    : newStructure.games[currentKey];
 
+  console.log(currentPath);
   const handleStartGame = () => {
     setShowGame(true);
   };
@@ -41,7 +43,7 @@ function App() {
           storyPath={currentPath}
           finish={finishGameOrStory}
           prompt={
-            isCurrentPositionGame ? structure.games[currentKey].prompt : null
+            isCurrentPositionGame ? newStructure.games[currentKey].prompt : null
           }
           isStory={isCurrentPositionStory}
         />

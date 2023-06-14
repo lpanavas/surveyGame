@@ -8,22 +8,8 @@ function GamePage({ gamePath, prompt, finishGame }) {
 
   useEffect(() => {
     setLoading(true);
-
-    fetch(gamePath)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setTechnologies(data.technologies);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log("Fetch error: ", error);
-        setLoading(false);
-      });
+    setTechnologies(gamePath.technologies);
+    setLoading(false);
   }, [gamePath]);
 
   if (loading) {
