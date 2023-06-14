@@ -1,0 +1,17 @@
+{
+  "order": ["intro", "pairwise_comparison", "nextStory", "sorting"],
+  "stories": {
+    "intro": {
+      "path": "../data/intro.json",
+      "publicOpinion": false
+    }
+  },
+  "games": {
+    "pairwise_comparison": {
+      "path": "../data/facialRecognition.json",
+      "prompt": "which of these two technologies is less accepable",
+      "publicOpinion": true,
+      "endResultPublicOpinion": true
+    }
+  }
+}

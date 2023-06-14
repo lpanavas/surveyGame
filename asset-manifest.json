@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/surveyGame/static/css/main.bee720d1.css",
+    "main.js": "/surveyGame/static/js/main.61f7cea5.js",
+    "static/js/787.28cb0dcd.chunk.js": "/surveyGame/static/js/787.28cb0dcd.chunk.js",
+    "static/media/robot-logo.png": "/surveyGame/static/media/robot-logo.bc30243a1bd07d361c86.png",
+    "static/media/noBackgroundLoading.gif": "/surveyGame/static/media/noBackgroundLoading.0941ef94294631b00019.gif",
+    "index.html": "/surveyGame/index.html",
+    "main.bee720d1.css.map": "/surveyGame/static/css/main.bee720d1.css.map",
+    "main.61f7cea5.js.map": "/surveyGame/static/js/main.61f7cea5.js.map",
+    "787.28cb0dcd.chunk.js.map": "/surveyGame/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bee720d1.css",
+    "static/js/main.61f7cea5.js"
+  ]
+}
