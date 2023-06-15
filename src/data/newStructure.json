@@ -22,7 +22,7 @@
         },
         "guide_explanation": {
           "role": "guide",
-          "scene": "Help us evaluate AI technologies for ethicality. Your input matters as we discern which AI technology is acceptable. Compare two cards and provide your verdict.",
+          "scene": "Help us evaluate AI technologies for ethicality. Choose which card you think the most people agree with.",
           "choices": [
             {
               "option": "Sweet! Glad I can help.",
@@ -33,22 +33,11 @@
         },
         "start_scene": {
           "role": "guide",
-          "scene": "At the end of the game, you will be able to see how your choices compare to others.",
+          "scene": "If you agree with the majority you recieve points. If you disagree, you recieve 0. The closer the public split, the more points you will recieve!",
           "choices": [
             {
               "option": "Let's go!",
               "public": 1
-            }
-          ],
-          "next": "end_game"
-        },
-        "end_game": {
-          "role": "guide",
-          "scene": "Let's get started!",
-          "choices": [
-            {
-              "option": "Begin Game",
-              "public": 100
             }
           ],
           "next": { "type": "game", "key": "pairwise_comparison" }
@@ -60,7 +49,7 @@
       "scenes": {
         "demographic_questionnaire": {
           "role": "guide",
-          "scene": "Before we begin the AI ethics game, we would appreciate it if you could provide us with some demographic information. Please note that all the information you provide will remain confidential and will only be used for statistical purposes. Let's get started:",
+          "scene": "Before we begin the AI ethics game, we would appreciate it if you could provide us with some demographic information. ",
           "choices": [
             {
               "option": "Continue",
@@ -70,29 +59,65 @@
           "next": "age_question"
         },
         "age_question": {
-          "role": "user",
+          "role": "guide",
           "scene": "What is your age?",
           "choices": [
             {
-              "option": "Continue",
+              "option": "18-24",
+              "public": 40
+            },
+            {
+              "option": "25-34",
+              "public": 40
+            },
+            {
+              "option": "35-44",
+              "public": 40
+            },
+            {
+              "option": "45-54",
+              "public": 40
+            },
+            {
+              "option": "55-64",
+              "public": 40
+            },
+            {
+              "option": "65+",
+              "public": 40
+            },
+            {
+              "option": "Prefer not to say",
               "public": 40
             }
           ],
           "next": "gender_question"
         },
         "gender_question": {
-          "role": "user",
+          "role": "guide",
           "scene": "What is your gender?",
           "choices": [
             {
-              "option": "Continue",
+              "option": "Male",
+              "public": 40
+            },
+            {
+              "option": "Female",
+              "public": 40
+            },
+            {
+              "option": "Non-binary",
+              "public": 40
+            },
+            {
+              "option": "Prefer not to say",
               "public": 40
             }
           ],
           "next": "education_question"
         },
         "education_question": {
-          "role": "user",
+          "role": "guide",
           "scene": "What is the highest level of education you have completed?",
           "choices": [
             {

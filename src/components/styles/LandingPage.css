@@ -20,6 +20,8 @@
   }
 
   .landing-page-button {
+    font-family: 'Roboto Mono', monospace;
+
     font-size: x-large; /* Increase the font size to make the text larger */
     margin: 1em;
     padding: .7em; /* Increase the padding to make the button bigger */

@@ -57,10 +57,13 @@
     border-radius: 4px;
     padding: 20px;
     z-index: 1;
+    
   }
   
   .descriptor-button {
     margin: 5px;
+    transition: transform 0.3s ease; /* Add transition for smooth effect */
+
   }
   
   .selected {

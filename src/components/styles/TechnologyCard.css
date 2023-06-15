@@ -1,16 +1,22 @@
 /* technologyCard.css */
 
+
+
 .technology-card {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 20px;
-    cursor: pointer;
-    flex-grow: 1;
-    position: relative;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
-    transition: transform 0.3s ease; /* Add transition for smooth effect */
-  }
-  
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: .5em;
+  min-height: 5vh;  
+  cursor: pointer;
+  flex-grow: 1;
+  flex-basis: 33.33%; /* this will make the card to take up a third of the container width */
+  position: relative;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+  transition: transform 0.3s ease; /* Add transition for smooth effect */
+  z-index: 2;
+
+}
+
   .technology-card:hover {
     background-color: #f5f5f5;
     transform: translateY(-3px); /* Move the card up slightly on hover */

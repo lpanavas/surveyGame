@@ -3,6 +3,8 @@ import { useSpring, animated as a } from "react-spring"; // Added this line
 import { useTrail, animated as b } from "react-spring";
 import TechnologyCard from "./TechnologyCard";
 import Rankings from "./Rankings";
+import ScoreBar from "./ScoreBar";
+import Comparisons from "../data/comparisons.json";
 
 import Button from "./Button";
 import "./styles/PairwiseGame.css";
@@ -36,6 +38,10 @@ const PairwiseGame = ({ technologies, finishGame }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [selectedPercent, setSelectedPercent] = useState(0);
   const [unselectedPercent, setUnselectedPercent] = useState(0);
+  const [firstClickTime, setFirstClickTime] = useState(null);
+  const [descriptorClickTimes, setDescriptorClickTimes] = useState([]);
+  const [score, setScore] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
     if (technologies.length > 0) {
@@ -63,7 +69,6 @@ const PairwiseGame = ({ technologies, finishGame }) => {
         0,
         technologies.length
       );
-      console.log(tempShuffledTechnologies);
       setShuffledTechnologies(tempShuffledTechnologies);
 
       // Use the original technologies array for the initial rankings
@@ -94,12 +99,14 @@ const PairwiseGame = ({ technologies, finishGame }) => {
   const calculateProgress = () => {
     const totalPairs = Math.floor(technologies.length / 2);
     const currentProgress = (currentPairIndex / totalPairs) * 100;
-    console.log(currentProgress);
     setProgress(currentProgress);
   };
 
   const handleChoice = (chosenIndex) => {
     // Adjustments to handle new shuffledTechnologies format
+    setDescriptorClickTimes([]);
+    setFirstClickTime(Date.now());
+
     if (selectedCard !== null) {
       return; // If a card is already selected, do nothing
     }
@@ -107,17 +114,39 @@ const PairwiseGame = ({ technologies, finishGame }) => {
     const chosenCard = chosenIndex % 2 === 0 ? 0 : 1;
 
     setSelectedCard(shuffledTechnologies[currentPairIndex][chosenCard]);
+    const percentCard = shuffledTechnologies[currentPairIndex][chosenCard];
+    const unpercentCard =
+      shuffledTechnologies[currentPairIndex][(chosenCard + 1) % 2];
+    setSelectedIndex(chosenIndex);
+
     setUnselectedCard(
       shuffledTechnologies[currentPairIndex][(chosenCard + 1) % 2]
     );
 
-    const selectedPercent = Math.floor(Math.random() * 100);
-    const unselectedPercent = 100 - selectedPercent;
+    const foundComparison = Comparisons.comparisons.find(
+      (comp) =>
+        comp.title1 === percentCard.title && comp.title2 === unpercentCard.title
+    );
 
-    setSelectedPercent(selectedPercent);
-    setUnselectedPercent(unselectedPercent);
+    // Update the score based on the selectedPercent
+    if (foundComparison) {
+      setScore((prevScore) => prevScore + (100 - foundComparison.percent1));
+      setSelectedPercent(foundComparison.percent1);
+      setUnselectedPercent(foundComparison.percent2);
+    } else {
+      setScore((prevScore) => prevScore);
+      const wrongOrder = Comparisons.comparisons.find(
+        (comp) =>
+          comp.title1 === unpercentCard.title &&
+          comp.title2 === percentCard.title
+      );
+      setSelectedPercent(wrongOrder.percent2);
+      setUnselectedPercent(wrongOrder.percent1);
+    }
+
     setSelectionMade(true);
   };
+
   const renderTechnologyCard = (index) => {
     const tech = shuffledTechnologies[currentPairIndex][index];
     const percent = {
@@ -133,6 +162,7 @@ const PairwiseGame = ({ technologies, finishGame }) => {
         index={index}
         percent={percent}
         selectionMade={selectionMade}
+        isClicked={index === selectedIndex}
       />
     );
   };
@@ -146,11 +176,26 @@ const PairwiseGame = ({ technologies, finishGame }) => {
         newDescriptors = [...prevDescriptors, descriptor];
       }
 
+      // Calculate time difference before updating descriptorClickTimes
+      const currentTime = Date.now();
+      const lastClickTime =
+        descriptorClickTimes.length > 0
+          ? descriptorClickTimes[descriptorClickTimes.length - 1]
+          : currentTime;
+      const timeDifference = currentTime - lastClickTime;
+
+      // If the time difference is more than half a second, increase the score
+      if (timeDifference >= 1000) {
+        // setScore((prevScore) => prevScore + 2);
+      }
+
+      setDescriptorClickTimes((prevTimes) => [...prevTimes, currentTime]);
+
       // Check if we should move onto the next stage or finish this round
       if (newDescriptors.length === 2) {
         if (descriptorStage === "firstDescriptors") {
-          console.log("update");
           setDescriptorStage("secondDescriptors");
+
           newDescriptors = [];
         } else if (descriptorStage === "secondDescriptors") {
           // Calculate results and proceed to next pair
@@ -176,17 +221,18 @@ const PairwiseGame = ({ technologies, finishGame }) => {
           setCurrentPairIndex(currentPairIndex + 1);
           setDescriptorStage("firstDescriptors"); // Reset the descriptor stage
           setSelectionMade(false);
+          setSelectedIndex(null);
 
           // Now the effect that triggers game over will run if necessary
           newDescriptors = [];
         }
       }
+
       return newDescriptors;
     });
   };
 
   const handleSkip = () => {
-    console.log("skip");
     let updatedRankings = { ...rankings };
     const firstTech = shuffledTechnologies[currentPairIndex][0].title;
     const secondTech = shuffledTechnologies[currentPairIndex][1].title;
@@ -218,10 +264,13 @@ const PairwiseGame = ({ technologies, finishGame }) => {
       </div>
       {!gameOver && (
         <>
-          <h2>
-            Which technology would you prefer to be used on you or your loved
-            ones?
-          </h2>
+          <h2>Which technology do other players think is less harmful?</h2>
+          <h4>
+            Score points by aligning with the majority! Your score increases by
+            how much your choice's majority percentage deviates from 100%. No
+            points if you're in the minority
+          </h4>
+          <ScoreBar score={score} />
 
           <div className="technology-pair">
             {currentPairIndex < shuffledTechnologies.length && (
@@ -232,7 +281,7 @@ const PairwiseGame = ({ technologies, finishGame }) => {
             )}
             {selectedCard !== null && (
               <div className="descriptors">
-                <h3>How would you describe in 2 words {selectedCard.title}?</h3>
+                <h3>How would you describe this card in 2 words?</h3>
                 <div className="selected-card-descriptors">
                   <div className="bad-descriptors">
                     <div role="img" aria-label="sad-face">

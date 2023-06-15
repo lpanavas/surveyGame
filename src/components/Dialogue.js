@@ -26,9 +26,7 @@ function Dialogue({ role, text }) {
           <img src={loadingGif} alt="loading" className="loading-image" />
         </div>
       ) : (
-        <div className={`dialogue ${role}`} style={{ fontSize: "large" }}>
-          {text}
-        </div>
+        <div className={`dialogue ${role}`}>{text}</div>
       )}
     </>
   );
